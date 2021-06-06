@@ -2,20 +2,41 @@ import { Route, useParams, useRouteMatch } from "react-router";
 import Comments from "../components/comments/Comments";
 import HighlightedQuote from "./../components/quotes/HighlightedQuote";
 import { Link } from "react-router-dom";
-
-const DUMMY_QUOTES = [
-  { id: "q1", author: "Shihan", text: "Learning React is fun!" },
-  { id: "q2", author: "Shamlan", text: "Learning React is great!" },
-];
+import useHttp from "./../hooks/useHttp";
+import { getSingleQuote } from "./../lib/api";
+import { useEffect } from "react";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
 
 const QuoteDetail = () => {
-  const params = useParams();
+  const { quoteId } = useParams();
   const routeMatch = useRouteMatch();
 
-  const quote = DUMMY_QUOTES.find((quote) => quote.id === params.quoteId);
+  const {
+    sendRequest,
+    status,
+    data: quote,
+    error,
+  } = useHttp(getSingleQuote, true);
 
-  console.log(routeMatch);
-  if (!quote) {
+  useEffect(() => {
+    sendRequest(quoteId);
+  }, [sendRequest, quoteId]);
+
+  // const quote = loadedQuotes.find((quote) => quote.id === params.quoteId);
+
+  if (status === "pending") {
+    return (
+      <div className="centered">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  if (!quote.text) {
     return <p>No Quote Found!</p>;
   }
 
