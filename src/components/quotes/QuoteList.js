@@ -22,13 +22,10 @@ const QuoteList = (props) => {
 
   const quoteList = sortQuotes(props.quotes, isSortingAscending);
   const onClickSortingHandler = () => {
-    history.push(
-      {
-        pathname: location.pathname,
-        search: `?sort=${isSortingAscending ? "dsc" : "asc"}`,
-      }
-      // `${location.pathname}?sort=${isSortingAscending ? "dsc" : "asc"}`
-    );
+    history.push({
+      pathname: location.pathname,
+      search: `?sort=${isSortingAscending ? "dsc" : "asc"}`,
+    });
   };
 
   return (
