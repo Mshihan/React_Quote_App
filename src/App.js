@@ -8,9 +8,9 @@ function App() {
     <div>
       <Switch>
         <Route path="/" exact>
-          <Redirect to="/quote" />
+          <Redirect to="/quotes" />
         </Route>
-        <Route path="/quote" exact>
+        <Route path="/quotes" exact>
           <AllQuotes />
         </Route>
         <Route path="/quotes/:quoteId">
